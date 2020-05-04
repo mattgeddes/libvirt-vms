@@ -1,4 +1,5 @@
 #cloud-config
 user: "{{ vm.admin_user }}"
 ssh_authorized_keys:
-    "{{ vm.admin_keys }}"
+{% for key in vm.admin_keys %}    - "{{ key }}"
+{% endfor %}
