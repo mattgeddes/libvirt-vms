@@ -5,7 +5,7 @@
   <currentMemory unit='KiB'>{{ vm.mem_kb }}</currentMemory>
   <vcpu placement='auto'>{{ vm.vcpus }}</vcpu>
   <os>
-    <type arch='x86_64' machine='{{ machine_type }}'>hvm</type>-->
+    <type arch='x86_64' machine='{{ vm.machine_type }}'>hvm</type>-->
     <boot dev='hd'/>
     <smbios mode='sysinfo'/>
   </os>
