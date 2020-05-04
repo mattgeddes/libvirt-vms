@@ -66,7 +66,7 @@
 	<target bus='{{ vm.drive_bus }}'/>
 	<product>{{ vm.drive_product }}</product>
 	<vendor>{{ vm.drive_vendor }}</vendor>
-	<source file='{{ vdisk_root }}/{{ vm.name }}/{{ drive.vdisk }}.{{ vm.drive_drive }}'/>
+	<source file='{{ vdisk_root }}/{{ vm.name }}/{{ drive.vdisk }}.{{ vm.drive_drivertype }}'/>
     </disk>
     {% endfor %}
     {% for nic in vm.nics %}
