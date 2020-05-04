@@ -11,7 +11,7 @@
   </os>
   <sysinfo type='smbios'>
       <bios>
-	  <entry name='vendor'>{{ vm.bios_vendor ) }}</entry>
+	  <entry name='vendor'>{{ vm.bios_vendor }}</entry>
       </bios>
       <system>
 	  <entry name='manufacturer'>{{ vm.system_manufacturer }}</entry>
@@ -71,7 +71,7 @@
     {% endfor %}
     {% for nic in vm.nics %}
     <interface type='network'>
-      <mac address='{{ nic.ipaddr | ipmac( hypervisor_id )}}'/>
+      <mac address='{{ nic.ipaddr | ipmac( hypervisor_id ) }}'/>
       <source network='{{ nic.network }}'/>
       <model type='{{ nic.model }}'/>
       <!--<address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>-->
