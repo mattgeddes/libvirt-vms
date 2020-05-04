@@ -8,7 +8,7 @@
     libvirt_networks: "{{ my_networks }}"
 - name: Build base VM definition from default values
   set_fact:
-      libvirt_vms: "{{ libvirt_vms | default([]) }} + {{ vm_models[ vm.template ] | combine( vm ) }}"
+      libvirt_vms: "{{ libvirt_vms | default([]) }} + {{ vm_models[ vm.template ] | combine( vm, recursive=True ) }}"
   when: my_vms is defined
   loop:
       "{{ my_vms }}"
