@@ -1,0 +1,4 @@
+#cloud-config
+user: "{{ vm.admin_user }}"
+ssh_authorized_keys:
+    "{{ vm.ssh_keys }}"
