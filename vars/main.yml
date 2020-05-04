@@ -39,4 +39,3 @@ vm_models:
           drive_vendor: "{{ drive_vendor }}"
           drive_product: "{{ drive_product }}"
           nic_model: "{{ nic_model }}"
-

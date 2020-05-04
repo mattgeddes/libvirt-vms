@@ -3,7 +3,7 @@
     var: my_vms
 # Do this for now in case we have to merge things like we do with VMs later
 - set_fact:
-    libvirt_networks: my_networks
+    libvirt_networks: "{{ my_networks }}"
 - name: Build base VM definition from default values
   set_fact:
       libvirt_vms: "{{ libvirt_vms | default([])}} + {{ vm_models[ vm.type ] | combine( vm ) }}"
