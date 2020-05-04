@@ -43,6 +43,43 @@
       creates: "{{ vdisk_root }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
   when: item.0.enabled != "no" and item.0.drive_type == "file" and item.1.backing_file is defined
   loop: "{{ libvirt_vms | subelements( 'drives' ) }}"
+- name: Cloud-init source directory
+  file:
+      path: "/tmp/cidata/{{ vm[ 'name' ] }}"
+      state: directory
+      recurse: yes
+  loop: "{{ libvirt_vms }}"
+  loop_control:
+      loop_var: vm
+- name: Cloud-init meta-data config from template
+  template:
+      src: "meta-data.j2"
+      dest: "/tmp/cidata/{{ vm[ 'name' ] }}/meta-data"
+      trim_blocks: yes
+  loop: "{{ libvirt_vms }}"
+  loop_control:
+      loop_var: yes
+- name: Cloud-init user-data config from template
+  template:
+      src: "user-data.j2"
+      dest: "/tmp/cidata/{{ vm[ 'name' ] }}/user-data"
+      trim_blocks: yes
+  loop: "{{ libvirt_vms }}"
+  loop_control:
+      loop_var: yes
+- name: Build cloud-init drive
+  command:
+      argv:
+          - "virt-make-fs"
+          - "--type=vfat"
+          - "--label=cidata"
+          - "/tmp/cidata/{{ vm[ 'name' ] }}"
+          - "{{ vdisk_root }}/{{ vm[ 'name' ] }}/cidata.raw"
+      creates: "{{ vdisk_root }}/{{ vm[ 'name' ] }}/cidata.raw"
+  when: "cloudinit" in vm and vm.cloudinit == "yes"
+  loop: "{{ vms }}"
+  loop_control:
+      loop_var: vm
 - name: VM definitions
   virt:
       command: define

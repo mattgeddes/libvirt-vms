@@ -69,6 +69,14 @@
 	<source file='{{ vdisk_root }}/{{ vm.name }}/{{ drive.vdisk }}.{{ vm.drive_drivertype }}'/>
     </disk>
     {% endfor %}
+    {% if "cloudinit" in vm and vm.cloudinit == "yes" %}
+    <disk type='file' device='disk'>
+	<driver name='qemu' drivertype='qcow2' discard='unmap' detect_zeroes='unmap'/>
+	<serial>{{ vm.name }}-cidata</serial>
+	<target dev='vdz' bus='virtio'/>
+	<source file='{{ vdisk_root }}/{{ vm.name }}/cidata.raw'/>
+    </disk>
+    {% endif %}
     {% for nic in vm.nics %}
     <interface type='network'>
       <mac address='{{ nic.ipaddr | ipmac( hypervisor_id ) }}'/>
