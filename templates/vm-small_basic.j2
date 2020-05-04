@@ -63,7 +63,7 @@
     <disk type='{{ vm.drive_type }}' device='{{ vm.drive_device }}'>
 	<driver name='{{ vm.drive_driver }}' type='{{ vm.drive_drivertype }}' discard='unmap' detect_zeroes='unmap'/>
 	<serial>{{ vm.name }}-{{ drive.vdisk }}</serial>
-	<target bus='{{ vm.drive_bus }}'/>
+	<target dev='{{ drive.target }}' bus='{{ vm.drive_bus }}'/>
 	<product>{{ vm.drive_product }}</product>
 	<vendor>{{ vm.drive_vendor }}</vendor>
 	<source file='{{ vdisk_root }}/{{ vm.name }}/{{ drive.vdisk }}.{{ vm.drive_drivertype }}'/>
