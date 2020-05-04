@@ -1,0 +1,42 @@
+---
+# Global constants for defaults
+bios_vendor: "Matthew Geddes"
+system_manufacturer: "Matthew Geddes"
+system_product: "KVM VM"
+system_version: "1.0.0"
+board_manufacturer: "Matthew Geddes"
+board_product: "KVM VM"
+board_version: "1.0.0"
+chassis_manufacturer: "Matthew Geddes"
+chassis_version: "1.0.0"
+drive_vendor: "ACME"
+drive_product: "Rust-o-matic mkI"
+nic_model: "e1000e"
+# Predefined collections of VM attributes
+vm_models:
+    small_basic:
+        - template: basic
+          mem_kb: 1048576
+          vcpus: 1
+          machine_type: "q35"
+          hypervisor: "kvm"
+          bios_vendor: "{{ bios_vendor }}"
+          system_manufacturer: "{{ system_manufacturer }}"
+          system_product: "{{ system_product }} Small Basic"
+          board_manufacturer: "{{ board_manufacturer }}"
+          board_product: "{{ board_product }} Small Basic"
+          board_version: "{{ board_version }}"
+          chassis_manufacturer: "{{ chassis_manufacturer }}"
+          chassis_version: "{{ chassis_version }}"
+          chassis_name: "{{ chassis_name }}"
+          chassis_asset: "{{ chassis_asset }}"
+          chassis_sku: "{{ chassis_sku }}"
+          drive_type: file
+          drive_device: disk
+          drive_driver: qemu
+          drive_bus: scsi
+          drive_drivertype: qcow2
+          drive_vendor: "{{ drive_vendor }}"
+          drive_product: "{{ drive_product }}"
+          nic_model: "{{ nic_model }}"
+

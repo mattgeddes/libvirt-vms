@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Matthew Geddes
+  description: An Ansible role for deploying virtual machines via libvirt
+  license: Apache-2.0
+  min_ansible_version: 2.9
+  platforms:
+      - name: Ubuntu
+        versions:
+            - focal
+            - eoan
+            - disco
+            - cosmic
+            - bionic
+      - name: Debian
+        versions:
+            - stretch
+            - buster
+  galaxy_tags: ["libvirt", "kvm"]
+dependencies: ["mattgeddes.libvirt_kvm"]

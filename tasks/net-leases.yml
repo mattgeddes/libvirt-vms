@@ -1,0 +1,20 @@
+---
+# Collection of tasks to build static DHCP lease mappings tables for each net.
+- set_fact:
+    network_leases: []
+- name: Static DHCP lease mappings table
+  set_fact:
+      network_leases: "{{ network_leases + [ '<host mac=\"' + item.1.ipaddr | ipmac( hypervisor_id ) + '\" name=\"' + item.0.name + '\" ip=\"' + item.1.ipaddr + '\"/>' ] }}"
+  when: item.0.enabled != "no" and item.1.ipaddr and item.1.network == current_network
+  loop: "{{ libvirt_vms | subelements( 'nics' ) }}"
+- debug:
+    var: network_leases
+    verbose: 1
+- name: Persist DHCP lease mappings table
+  virt_net:
+      name: "{{ current_network }}"
+      command: modify
+      xml: "{{ lease }}"
+  loop: "{{ network_leases }}"
+  loop_control:
+      loop_var: lease
