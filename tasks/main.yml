@@ -1,5 +1,17 @@
 ---
 - debug:
+    var: my_vms
+# Do this for now in case we have to merge things like we do with VMs later
+- set_fact:
+    libvirt_networks: my_networks
+- name: Build base VM definition from default values
+  set_fact:
+      libvirt_vms: "{{ libvirt_vms | default([])}} + {{ vm_models[ vm.type ] | combine( vm ) }}"
+  loop:
+      "{{ my_vms }}"
+  loop_control:
+      loop_var: vm
+- debug:
     var: libvirt_vms
 - name: VM drives directory
   file:
