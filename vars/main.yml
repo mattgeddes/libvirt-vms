@@ -14,7 +14,7 @@ chassis_asset: "CH-098876"
 chassis_sku: "CHASS-01"
 drive_vendor: "ACME"
 drive_product: "Rust-o-matic mkI"
-nic_model: "e1000"
+nic_model: "virtio"
 # Predefined collections of VM attributes
 vm_models:
     small_basic:
@@ -38,7 +38,7 @@ vm_models:
           drive_type: file
           drive_device: disk
           drive_driver: qemu
-          drive_bus: scsi
+          drive_bus: virtio
           drive_drivertype: qcow2
           drive_vendor: "{{ drive_vendor }}"
           drive_product: "{{ drive_product }}"
