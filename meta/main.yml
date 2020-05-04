@@ -16,4 +16,6 @@ galaxy_info:
             - stretch
             - buster
   galaxy_tags: ["libvirt", "kvm"]
-dependencies: ["mattgeddes.libvirt_kvm"]
+dependencies:
+    - src: "mattgeddes.libvirt_kvm"
+      version: v1.0.1

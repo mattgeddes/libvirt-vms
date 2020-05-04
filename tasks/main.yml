@@ -51,6 +51,7 @@
   loop_control:
       loop_var: current_network
 - name: libvirt VM running state
+  virt:
       name: "{{ vm.name }}"
       autostart: "{{ vm.enabled }}"
       state: "{{ vm.state }}"
