@@ -73,7 +73,7 @@
     <interface type='network'>
       <mac address='{{ nic.ipaddr | ipmac( hypervisor_id ) }}'/>
       <source network='{{ nic.network }}'/>
-      <model type='{{ nic.model }}'/>
+      <model type='{{ vm.nic_model }}'/>
       <!--<address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>-->
     </interface>
     {% endfor %}
