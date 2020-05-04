@@ -40,6 +40,6 @@ vm_models:
           drive_driver: qemu
           drive_bus: virtio
           drive_drivertype: qcow2
-          drive_vendor: "{{ drive_vendor }}"
-          drive_product: "{{ drive_product }}"
+          #drive_vendor: "{{ drive_vendor }}"
+          #drive_product: "{{ drive_product }}"
           nic_model: "{{ nic_model }}"
