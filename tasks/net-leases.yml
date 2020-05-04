@@ -1,6 +1,6 @@
 ---
 # Collection of tasks to build static DHCP lease mappings tables for each net.
-- name: Define network leases:
+- name: Define network leases
   set_fact:
     network_leases: []
 - name: Static DHCP lease mappings table
