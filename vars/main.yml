@@ -14,7 +14,7 @@ chassis_asset: "CH-098876"
 chassis_sku: "CHASS-01"
 drive_vendor: "ACME"
 drive_product: "Rust-o-matic mkI"
-nic_model: "e1000e"
+nic_model: "e1000"
 # Predefined collections of VM attributes
 vm_models:
     small_basic:
