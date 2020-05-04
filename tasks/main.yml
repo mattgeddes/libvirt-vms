@@ -76,7 +76,7 @@
           - "/tmp/cidata/{{ vm[ 'name' ] }}"
           - "{{ vdisk_root }}/{{ vm[ 'name' ] }}/cidata.raw"
       creates: "{{ vdisk_root }}/{{ vm[ 'name' ] }}/cidata.raw"
-  when: cloudinit in vm and vm.cloudinit == "yes"
+  when: vm.cloudinit == "yes"
   loop: "{{ libvirt_vms }}"
   loop_control:
       loop_var: vm
