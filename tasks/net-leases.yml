@@ -10,7 +10,6 @@
   loop: "{{ libvirt_vms | subelements( 'nics' ) }}"
 - debug:
     var: network_leases
-    verbose: 1
 - name: Persist DHCP lease mappings table
   virt_net:
       name: "{{ current_network }}"
