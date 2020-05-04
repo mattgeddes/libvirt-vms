@@ -43,7 +43,6 @@
       creates: "{{ vdisk_root }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
   when: item.0.enabled != "no" and item.0.drive_type == "file" and item.1.backing_file is defined
   loop: "{{ libvirt_vms | subelements( 'drives' ) }}"
-# TODO: Don't support other drive types yet
 - name: VM definitions
   virt:
       command: define
