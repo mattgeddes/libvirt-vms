@@ -3,7 +3,7 @@
   <uuid>{{ vm.name | to_uuid() }}</uuid>
   <memory unit='KiB'>{{ vm.mem_kb }}</memory>
   <currentMemory unit='KiB'>{{ vm.mem_kb }}</currentMemory>
-  <vcpu placement='auto'>{{ vm.vcpus }}</vcpu>
+  <vcpu placement='static'>{{ vm.vcpus }}</vcpu>
   <os>
     <type arch='x86_64' machine='{{ vm.machine_type }}'>hvm</type>-->
     <boot dev='hd'/>
