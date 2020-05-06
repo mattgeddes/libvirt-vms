@@ -1,0 +1,10 @@
+version: 2
+ethernets:
+{% for nic in vm.nics %}
+  {{ nic.network }}:
+     match:
+         mac_address: {{ nic.ipaddr | ipmac( hypervisor_id ) }}
+     set-name: {{ nic.network }}
+     dhcpv4: yes
+{% endfor %}
+

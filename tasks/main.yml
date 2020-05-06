@@ -67,6 +67,14 @@
   loop: "{{ libvirt_vms }}"
   loop_control:
       loop_var: vm
+- name: Cloud-init network-config config from template
+  template:
+      src: "network-config.j2"
+      dest: "/tmp/cidata/{{ vm[ 'name' ] }}/network-config"
+      trim_blocks: yes
+  loop: "{{ libvirt_vms }}"
+  loop_control:
+      loop_var: vm
 - name: Build cloud-init drive
   command:
       argv:
