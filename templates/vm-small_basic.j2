@@ -11,25 +11,25 @@
   </os>
   <sysinfo type='smbios'>
       <bios>
-	  <entry name='vendor'>{{ vm.bios_vendor }}</entry>
+	  <entry name='vendor'>{{ vm.bios_vendor | default( bios_vendor ) }}</entry>
       </bios>
       <system>
-	  <entry name='manufacturer'>{{ vm.system_manufacturer }}</entry>
-	  <entry name='product'>{{ vm.system_product }}</entry>
-	  <entry name='version'>{{ vm.system_version }}</entry>
+	  <entry name='manufacturer'>{{ vm.system_manufacturer | default( system_manufacturer ) }}</entry>
+	  <entry name='product'>{{ vm.system_product | default( system_product ) }}</entry>
+	  <entry name='version'>{{ vm.system_version | default( system_version )}}</entry>
       </system>
       <baseBoard>
-	  <entry name='manufacturer'>{{ vm.board_manufacturer }}</entry>
-	  <entry name='product'>{{ vm.board_product }}</entry>
-	  <entry name='version'>{{ vm.board_version }}</entry>
+	  <entry name='manufacturer'>{{ vm.board_manufacturer default( board_manufacturer ) }}</entry>
+	  <entry name='product'>{{ vm.board_product | default( board_product ) }}</entry>
+	  <entry name='version'>{{ vm.board_version | default( board_version ) }}</entry>
 	  <entry name='serial'>{{ vm.name | to_uuid() }}</entry>
       </baseBoard>
       <chassis>
-	  <entry name='manufacturer'>{{ vm.chassis_manufacturer }}</entry>
-	  <entry name='version'>{{ vm.chassis_version }}</entry>
+	  <entry name='manufacturer'>{{ vm.chassis_manufacturer | default( chassis_manufacturer ) }}</entry>
+	  <entry name='version'>{{ vm.chassis_version | default( chassis_version ) }}</entry>
 	  <entry name='serial'>{{ vm.name | to_uuid() }}</entry>
-	  <entry name='asset'>{{ vm.chassis_name }}</entry>
-	  <entry name='sku'>{{ vm.chassis_sku }}</entry>
+	  <entry name='asset'>{{ vm.chassis_name | default( chassis_name ) }}</entry>
+	  <entry name='sku'>{{ vm.chassis_sku | default( chassis_sku ) }}</entry>
       </chassis>
       <oemStrings>
 	  <entry>oem_vm_owner:{{ vm.owner }}</entry>
