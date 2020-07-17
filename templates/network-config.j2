@@ -1,10 +1,17 @@
 version: 2
 ethernets:
 {% for nic in vm.nics %}
+{% if nic.ipaddr is defined %}
   {{ nic.network }}:
      match:
          mac_address: {{ nic.ipaddr | ipmac( hypervisor_id ) }}
      set-name: {{ nic.network }}
-     dhcpv4: yes
+     addresses:
+	- {{ nic.ipaddr }}/{{ nic.netmask }}
+     {% if nic.gateway is defined %}gateway4: {{ nic.gateway }}{% endif %}
+     {% if nic.nameserver is defined %}nameservers:
+	addresses:
+	    - {{ nic.gateway }}{% endif %}
+{% endif %}
 {% endfor %}
 

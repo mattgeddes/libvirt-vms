@@ -60,13 +60,13 @@
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     {% for drive in vm.drives %}
-    <disk type='{{ vm.drive_type }}' device='{{ vm.drive_device }}'>
-	<driver name='{{ vm.drive_driver }}' type='{{ vm.drive_drivertype }}' discard='unmap' detect_zeroes='unmap'/>
+    <disk type='{{ drive.type }}' device='{{ drive.device }}'>
+	<driver name='{{ drive.drivername }}' type='{{ drive.drivertype }}' discard='unmap' detect_zeroes='unmap'/>
 	<serial>{{ vm.name }}-{{ drive.vdisk }}</serial>
-	<target dev='{{ drive.target }}' bus='{{ vm.drive_bus }}'/>
-	{% if "drive_product" in vm %}<product>{{ vm.drive_product }}</product>{% endif %}
-	{% if "drive_vendor" in vm %}<vendor>{{ vm.drive_vendor }}</vendor>{% endif %}
-	<source file='{{ vdisk_root }}/{{ vm.name }}/{{ drive.vdisk }}.{{ vm.drive_drivertype }}'/>
+	<target dev='{{ drive.targetdev }}' bus='{{ drive.targetbus }}'/>
+	{% if "product" in drive %}<product>{{ drive.product }}</product>{% endif %}
+	{% if "vendor" in drive %}<vendor>{{ drive.vendor }}</vendor>{% endif %}
+	<source file='{{ vdisk_root }}/{{ vm.name }}/{{ drive.vdisk }}.{{ drive.drivertype }}'/>
     </disk>
     {% endfor %}
     {% if "cloudinit" in vm and vm.cloudinit == "yes" %}
@@ -81,7 +81,7 @@
     <interface type='network'>
       <mac address='{{ nic.ipaddr | ipmac( hypervisor_id ) }}'/>
       <source network='{{ nic.network }}'/>
-      <model type='{{ vm.nic_model }}'/>
+      <model type='{{ nic.model }}'/>
       <!--<address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>-->
     </interface>
     {% endfor %}
