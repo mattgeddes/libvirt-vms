@@ -19,7 +19,7 @@
 	  <entry name='version'>{{ vm.system_version | default( system_version )}}</entry>
       </system>
       <baseBoard>
-	  <entry name='manufacturer'>{{ vm.board_manufacturer default( board_manufacturer ) }}</entry>
+	  <entry name='manufacturer'>{{ vm.board_manufacturer | default( board_manufacturer ) }}</entry>
 	  <entry name='product'>{{ vm.board_product | default( board_product ) }}</entry>
 	  <entry name='version'>{{ vm.board_version | default( board_version ) }}</entry>
 	  <entry name='serial'>{{ vm.name | to_uuid() }}</entry>
