@@ -5,7 +5,7 @@ network:
 {% if nic.ipaddr is defined %}
     - type: physical
       name: {{ nic.network }}
-      mac_address: {{ nic.ipaddr | ipmac( hypervior_id ) }}
+      mac_address: {{ nic.ipaddr | ipmac( hypervisor_id ) }}
       subnets:
          - type: static
            address: {{ nic.ipaddr }}/{{ nic.netmask }}

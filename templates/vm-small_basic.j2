@@ -69,7 +69,7 @@
 	<source file='{{ vdisk_root }}/{{ vm.name }}/{{ drive.vdisk }}.{{ drive.drivertype }}'/>
     </disk>
     {% endfor %}
-    {% if "cloudinit" in vm and vm.cloudinit == "yes" %}
+    {% if "cloudinit" in vm and vm.cloudinit %}
     <disk type='file' device='disk'>
 	<driver name='qemu' drivertype='qcow2' discard='unmap' detect_zeroes='unmap'/>
 	<serial>{{ vm.name }}-cidata</serial>
