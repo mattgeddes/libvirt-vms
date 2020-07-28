@@ -11,7 +11,7 @@ ethernets:
      {% if nic.gateway is defined %}gateway4: {{ nic.gateway }}{% endif %}
      {% if nic.nameserver is defined %}nameservers:
 	addresses:
-	    - {{ nic.gateway }}{% endif %}
+	    - {{ nic.nameserver }}{% endif %}
 {% endif %}
 {% endfor %}
 

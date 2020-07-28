@@ -1,0 +1,19 @@
+network:
+    version: 1
+    config:
+{% for nic in vm.nics %}
+{% if nic.ipaddr is defined %}
+    - type: physical
+      name: {{ nic.network }}
+      mac_address: {{ nic.ipaddr | ipmac( hypervior_id ) }}
+      subnets:
+         - type: static
+           address: {{ nic.ipaddr }}/{{ nic.netmask }}
+           gateway: {{ nic.gateway }}
+{% endif %}
+{% endfor %}
+{% if vm.nameserver is defined %}
+    - type: nameserver
+      address:
+         - {{ vm.nameserver }}
+{% endif %}
