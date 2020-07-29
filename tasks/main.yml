@@ -40,6 +40,7 @@
           - "-f"
           - "qcow2"
           - "{{ vdisk_root }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
+          - "{{ item.1.size }}"
       creates: "{{ vdisk_root }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
   when: item.0.enabled != "no" and item.1.type == "file" and item.1.backing_file is defined
   loop: "{{ libvirt_vms | subelements( 'drives' ) }}"
