@@ -1,45 +1,92 @@
 ---
 # Global constants for defaults
-bios_vendor: "Matthew Geddes"
-system_manufacturer: "Matthew Geddes"
-system_product: "KVM VM"
-system_version: "1.0.0"
-board_manufacturer: "Matthew Geddes"
-board_product: "KVM VM"
-board_version: "1.0.0"
-chassis_name: "My Chassis"
-chassis_manufacturer: "Matthew Geddes"
-chassis_version: "1.0.0"
-chassis_asset: "CH-098876"
-chassis_sku: "CHASS-01"
-drive_vendor: "ACME"
-drive_product: "Rust-o-matic mkI"
-nic_model: "virtio"
+default_hypervisor: "kvm"
+default_machine_type: "q35"
+
+# Virtual hardware defaults
+default_nic_model: "virtio"
+default_drive_bus_type: "virtio"
+default_drive_driver_type: "qcow2"
+default_drive_driver: "qemu"
+default_drive_device_type: "disk"
+
+# DMI/SMI defaults
+default_bios_vendor: "ACME"
+default_system_manufacturer: "ACME"
+default_system_product: "KVM VM"
+default_system_version: "1.0.0"
+default_board_manufacturer: "ACME"
+default_board_product: "KVM VM"
+default_board_version: "1.0.0"
+default_chassis_name: "Virtual Chassis"
+default_chassis_manufacturer: "ACME"
+default_chassis_version: "1.0.0"
+default_chassis_asset: "CH-098876"
+default_chassis_sku: "CHASS-01"
+
 # Predefined collections of VM attributes
 vm_models:
-    small_basic:
-        - template: basic
-          mem_kb: 1048576
+    tiny_basic:
+        - mem_kb: 524288
           vcpus: 1
-          machine_type: "q35"
-          hypervisor: "kvm"
-          bios_vendor: "{{ bios_vendor }}"
-          system_manufacturer: "{{ system_manufacturer }}"
-          system_product: "{{ system_product }} Small Basic"
-          system_version: "{{ system_version }}"
-          board_manufacturer: "{{ board_manufacturer }}"
-          board_product: "{{ board_product }} Small Basic"
-          board_version: "{{ board_version }}"
-          chassis_manufacturer: "{{ chassis_manufacturer }}"
-          chassis_version: "{{ chassis_version }}"
-          chassis_name: "{{ chassis_name }}"
-          chassis_asset: "{{ chassis_asset }}"
-          chassis_sku: "{{ chassis_sku }}"
-          drive_type: file
-          drive_device: disk
-          drive_driver: qemu
-          drive_bus: virtio
-          drive_drivertype: qcow2
-          #drive_vendor: "{{ drive_vendor }}"
-          #drive_product: "{{ drive_product }}"
-          nic_model: "{{ nic_model }}"
+          hypervisor: "{{ default_hypervisor }}"
+          machine_type: "{{ default_machine_type }}"
+          bios_vendor: "{{ default_bios_vendor }}"
+          system_manufacturer: "{{ default_system_manufacturer }}"
+          system_product: "Tiny {{ default_system_product }}"
+          system_version: "{{ default_system_version }}"
+          board_manufacturer: "{{ default_board_manufacturer }}"
+          board_product: "Tiny {{ default_board_product }}"
+          board_version: "{{ default_board_version }}"
+          chassis_manufacturer: "{{ default_chassis_manufacturer }}"
+          chassis_version: "{{ default_chassis_version }}"
+          chassis_name: "{{ default_chassis_name }}"
+          chassis_asset: "{{ default_chassis_asset }}"
+    small_basic:
+        - mem_kb: 2097152
+          vcpus: 1
+          hypervisor: "{{ default_hypervisor }}"
+          machine_type: "{{ default_machine_type }}"
+          bios_vendor: "{{ default_bios_vendor }}"
+          system_manufacturer: "{{ default_system_manufacturer }}"
+          system_product: "Small {{ default_system_product }}"
+          system_version: "{{ default_system_version }}"
+          board_manufacturer: "{{ default_board_manufacturer }}"
+          board_product: "Small {{ default_board_product }}"
+          board_version: "{{ default_board_version }}"
+          chassis_manufacturer: "{{ default_chassis_manufacturer }}"
+          chassis_version: "{{ default_chassis_version }}"
+          chassis_name: "{{ default_chassis_name }}"
+          chassis_asset: "{{ default_chassis_asset }}"
+    medium_basic:
+        - mem_kb: 16777216
+          vcpus: 2
+          hypervisor: "{{ default_hypervisor }}"
+          machine_type: "{{ default_machine_type }}"
+          bios_vendor: "{{ default_bios_vendor }}"
+          system_manufacturer: "{{ default_system_manufacturer }}"
+          system_product: "Medium {{ default_system_product }}"
+          system_version: "{{ default_system_version }}"
+          board_manufacturer: "{{ default_board_manufacturer }}"
+          board_product: "Medium {{ default_board_product }}"
+          board_version: "{{ default_board_version }}"
+          chassis_manufacturer: "{{ default_chassis_manufacturer }}"
+          chassis_version: "{{ default_chassis_version }}"
+          chassis_name: "{{ default_chassis_name }}"
+          chassis_asset: "{{ default_chassis_asset }}"
+    large_basic:
+        - mem_kb: 33554432
+          vcpus: 4
+          hypervisor: "{{ default_hypervisor }}"
+          machine_type: "{{ default_machine_type }}"
+          bios_vendor: "{{ default_bios_vendor }}"
+          system_manufacturer: "{{ default_system_manufacturer }}"
+          system_product: "Large {{ default_system_product }}"
+          system_version: "{{ default_system_version }}"
+          board_manufacturer: "{{ default_board_manufacturer }}"
+          board_product: "Large {{ default_board_product }}"
+          board_version: "{{ default_board_version }}"
+          chassis_manufacturer: "{{ default_chassis_manufacturer }}"
+          chassis_version: "{{ default_chassis_version }}"
+          chassis_name: "{{ default_chassis_name }}"
+          chassis_asset: "{{ default_chassis_asset }}"

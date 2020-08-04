@@ -8,107 +8,107 @@
     libvirt_networks: "{{ my_networks }}"
 - name: Define VMs table
   set_fact:
-      libvirt_vms: []
+    libvirt_vms: []
   when: my_vms is defined
 - name: Build base VM definition from default values
   set_fact:
-      libvirt_vms: "{{ libvirt_vms }} + [ {{ vm_models[ vm.template ] | combine( vm, recursive=True ) }} ]"
+    libvirt_vms: "{{ libvirt_vms }} + [ {{ vm_models[ vm.template ] | combine( vm, recursive=True ) }} ]"
   when: my_vms is defined
   loop:
-      "{{ my_vms }}"
+    "{{ my_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
 - name: Merged VM definitions
   debug:
     var: libvirt_vms
 - name: VM drives directory
   file:
-      state: directory
-      path: "{{ vdisk_root }}/{{ item.name }}"
+    state: directory
+    path: "{{ vm_deploy_path }}/{{ item.name }}"
   when: item.enabled != "no"
   with_items:
-      "{{ libvirt_vms }}"
+    - "{{ libvirt_vms }}"
 - name: VM copy-on-write drives
   command:
-      argv:
-          - "/usr/bin/qemu-img"
-          - "create"
-          - "-b"
-          - "{{ template_path }}/{{ item.1.backing_file }}"
-          - "-F"
-          - "qcow2"
-          - "-f"
-          - "qcow2"
-          - "{{ vdisk_root }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
-          - "{{ item.1.size }}"
-      creates: "{{ vdisk_root }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
+    argv:
+      - "/usr/bin/qemu-img"
+      - "create"
+      - "-b"
+      - "{{ vm_template_path }}/{{ item.1.backing_file }}"
+      - "-F"
+      - "qcow2"
+      - "-f"
+      - "qcow2"
+      - "{{ vm_deploy_path }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
+      - "{{ item.1.size }}"
+    creates: "{{ vm_deploy_path }}/{{ item.0.name }}/{{ item.1.vdisk }}.qcow2"
   when: item.0.enabled != "no" and item.1.type == "file" and item.1.backing_file is defined
   loop: "{{ libvirt_vms | subelements( 'drives' ) }}"
 - name: Cloud-init source directory
   file:
-      path: "/tmp/cidata/{{ vm[ 'name' ] }}"
-      state: directory
-      recurse: yes
+    path: "/tmp/cidata/{{ vm[ 'name' ] }}"
+    state: directory
+    recurse: yes
   loop: "{{ libvirt_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
 - name: Cloud-init meta-data config from template
   template:
-      src: "meta-data.j2"
-      dest: "/tmp/cidata/{{ vm[ 'name' ] }}/meta-data"
-      trim_blocks: yes
+    src: "meta-data.j2"
+    dest: "/tmp/cidata/{{ vm[ 'name' ] }}/meta-data"
+    trim_blocks: yes
   loop: "{{ libvirt_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
 - name: Cloud-init user-data config from template
   template:
-      src: "user-data.j2"
-      dest: "/tmp/cidata/{{ vm[ 'name' ] }}/user-data"
-      trim_blocks: yes
+    src: "user-data.j2"
+    dest: "/tmp/cidata/{{ vm[ 'name' ] }}/user-data"
+    trim_blocks: yes
   loop: "{{ libvirt_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
 - name: Cloud-init v1 network-config config from template
   template:
-      src: "network-config-v1.j2"
-      dest: "/tmp/cidata/{{ vm[ 'name' ] }}/network-config"
-      trim_blocks: yes
+    src: "network-config-v1.j2"
+    dest: "/tmp/cidata/{{ vm[ 'name' ] }}/network-config"
+    trim_blocks: yes
   loop: "{{ libvirt_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
 - name: Build cloud-init drive
   command:
-      argv:
-          - "virt-make-fs"
-          - "--type=vfat"
-          - "--label=cidata"
-          - "/tmp/cidata/{{ vm[ 'name' ] }}"
-          - "{{ vdisk_root }}/{{ vm[ 'name' ] }}/cidata.raw"
-      creates: "{{ vdisk_root }}/{{ vm[ 'name' ] }}/cidata.raw"
+    argv:
+      - "virt-make-fs"
+      - "--type=vfat"
+      - "--label=cidata"
+      - "/tmp/cidata/{{ vm[ 'name' ] }}"
+      - "{{ vm_deploy_path }}/{{ vm[ 'name' ] }}/cidata.raw"
+    creates: "{{ vm_deploy_path }}/{{ vm[ 'name' ] }}/cidata.raw"
   when: vm.cloudinit is defined
   loop: "{{ libvirt_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
 - name: VM definitions
   virt:
-      command: define
-      uri: "qemu:///system"
-      xml: '{{ lookup( "template", "vm-" + vm.template + ".j2" ) }}'
+    command: define
+    uri: "qemu:///system"
+    xml: '{{ lookup( "template", "vm-" + vm.template + ".j2" ) }}'
   when: vm.enabled != "no"
   loop: "{{ libvirt_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
 - name: Static DHCP lease mappings
   include_tasks: net-leases.yml
   loop: "{{ libvirt_networks }}"
   loop_control:
-      loop_var: current_network
+    loop_var: current_network
 - name: libvirt VM running state
   virt:
-      name: "{{ vm.name }}"
-      autostart: "{{ vm.enabled }}"
-      state: "{{ vm.state }}"
+    name: "{{ vm.name }}"
+    autostart: "{{ vm.enabled }}"
+    state: "{{ vm.state }}"
   when: vm.enabled != "no"
   loop: "{{ libvirt_vms }}"
   loop_control:
-      loop_var: vm
+    loop_var: vm
