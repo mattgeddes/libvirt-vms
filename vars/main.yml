@@ -26,6 +26,22 @@ default_chassis_sku: "CHASS-01"
 
 # Predefined collections of VM attributes
 vm_models:
+    micro_basic:
+        - mem_kb: 262144
+          vcpus: 1
+          hypervisor: "{{ default_hypervisor }}"
+          machine_type: "{{ default_machine_type }}"
+          bios_vendor: "{{ default_bios_vendor }}"
+          system_manufacturer: "{{ default_system_manufacturer }}"
+          system_product: "Micro {{ default_system_product }}"
+          system_version: "{{ default_system_version }}"
+          board_manufacturer: "{{ default_board_manufacturer }}"
+          board_product: "Micro {{ default_board_product }}"
+          board_version: "{{ default_board_version }}"
+          chassis_manufacturer: "{{ default_chassis_manufacturer }}"
+          chassis_version: "{{ default_chassis_version }}"
+          chassis_name: "{{ default_chassis_name }}"
+          chassis_asset: "{{ default_chassis_asset }}"
     tiny_basic:
         - mem_kb: 524288
           vcpus: 1

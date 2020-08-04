@@ -1,0 +1,106 @@
+<domain type='{{ vm.hypervisor | default( default_hypervisor ) }}'>
+  <name>{{ vm.name }}</name>
+  <uuid>{{ vm.name | to_uuid() }}</uuid>
+  <memory unit='KiB'>{{ vm.mem_kb }}</memory>
+  <currentMemory unit='KiB'>{{ vm.mem_kb }}</currentMemory>
+  <vcpu placement='static'>{{ vm.vcpus }}</vcpu>
+  <os>
+    <type arch='x86_64' machine='{{ vm.machine_type }}'>hvm</type>-->
+    <boot dev='hd'/>
+    <smbios mode='sysinfo'/>
+  </os>
+  <sysinfo type='smbios'>
+      <bios>
+	  <entry name='vendor'>{{ vm.bios_vendor | default( default_bios_vendor ) }}</entry>
+      </bios>
+      <system>
+	  <entry name='manufacturer'>{{ vm.system_manufacturer | default( default_system_manufacturer ) }}</entry>
+	  <entry name='product'>{{ vm.system_product | default( default_system_product ) }}</entry>
+	  <entry name='version'>{{ vm.system_version | default( default_system_version )}}</entry>
+      </system>
+      <baseBoard>
+	  <entry name='manufacturer'>{{ vm.board_manufacturer | default( default_board_manufacturer ) }}</entry>
+	  <entry name='product'>{{ vm.board_product | default( default_board_product ) }}</entry>
+	  <entry name='version'>{{ vm.board_version | default( default_board_version ) }}</entry>
+	  <entry name='serial'>{{ vm.name | to_uuid() }}</entry>
+      </baseBoard>
+      <chassis>
+	  <entry name='manufacturer'>{{ vm.chassis_manufacturer | default( default_chassis_manufacturer ) }}</entry>
+	  <entry name='version'>{{ vm.chassis_version | default( default_chassis_version ) }}</entry>
+	  <entry name='serial'>{{ vm.name | to_uuid() }}</entry>
+	  <entry name='asset'>{{ vm.chassis_name | default( default_chassis_name ) }}</entry>
+	  <entry name='sku'>{{ vm.chassis_sku | default( default_chassis_sku ) }}</entry>
+      </chassis>
+      <oemStrings>
+	  <entry>oem_vm_owner:{{ vm.owner }}</entry>
+	  <entry>oem_vm_host:{{ ansible_hostname }}</entry>
+      </oemStrings>
+  </sysinfo>
+  <features>
+    <acpi/>
+    <apic/>
+  </features>
+  <cpu mode='custom' match='exact' check='partial'>
+    <model fallback='allow'>SandyBridge-IBRS</model>
+    <feature policy='require' name='spec-ctrl'/>
+    <feature policy='require' name='ssbd'/>
+  </cpu>
+  <clock offset='utc'>
+    <timer name='rtc' tickpolicy='catchup'/>
+    <timer name='pit' tickpolicy='delay'/>
+    <timer name='hpet' present='no'/>
+  </clock>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <pm>
+    <suspend-to-mem enabled='no'/>
+    <suspend-to-disk enabled='no'/>
+  </pm>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    {% for drive in vm.drives %}
+    <disk type='{{ drive.type }}' device='{{ drive.device | default( default_drive_device_type )}}'>
+	<driver name='{{ drive.drivername | default( default_drive_driver ) }}' type='{{ drive.drivertype | default( default_drive_driver_type ) }}' discard='unmap' detect_zeroes='unmap'/>
+	<serial>{{ vm.name }}-{{ drive.vdisk }}</serial>
+	<target dev='{{ drive.targetdev }}' bus='{{ drive.targetbus | default( default_drive_bus_type ) }}'/>
+	<source file='{{ vm_deploy_path }}/{{ vm.name }}/{{ drive.vdisk }}.{{ drive.drivertype }}'/>
+    </disk>
+    {% endfor %}
+    {% if "cloudinit" in vm and vm.cloudinit %}
+    <disk type='file' device='disk'>
+	<driver name='qemu' drivertype='qcow2' discard='unmap' detect_zeroes='unmap'/>
+	<serial>{{ vm.name }}-cidata</serial>
+	<target dev='vdz' bus='virtio'/>
+	<source file='{{ vm_deploy_path }}/{{ vm.name }}/cidata.raw'/>
+    </disk>
+    {% endif %}
+    {% for nic in vm.nics %}
+    <interface type='network'>
+      <mac address='{{ nic.ipaddr | ipmac( hypervisor_id ) }}'/>
+      <source network='{{ nic.network }}'/>
+      <model type='{{ nic.model | default( default_nic_model ) }}'/>
+    </interface>
+    {% endfor %}
+    <serial type='pty'>
+      <target type='isa-serial' port='0'>
+        <model name='isa-serial'/>
+      </target>
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
+    <graphics type='spice' port="-1" autoport='yes' listen='0.0.0.0'>
+      <listen type='address'/>
+      <image compression='off'/>
+    </graphics>
+    <memballoon model='virtio'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
+    </memballoon>
+    <rng model="virtio">
+      <backend model="random">/dev/urandom</backend>
+      <alias name="rng0"/>
+    </rng>
+  </devices>
+  <!-- TODO: add GPU and watchdog devices -->
+</domain>
